@@ -1,9 +1,9 @@
 package net.endhq.bukkitplugin;
 
 
-import org.bukkit.plugin.java.JavaPlugin;
+import net.endhq.remoteentities.RemoteEntities;
 
-import de.kumpelblase2.remoteentities.RemoteEntities;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class BukkitPlugin extends JavaPlugin {
 	private static BukkitPlugin inst;
