@@ -1,2 +1,0 @@
-This is a placeholder so that it doesn't skip through empty directories.
-That drives me insane. I may or may not ever put somthing here.
