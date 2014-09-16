@@ -6,6 +6,7 @@ import net.endhq.remoteentities.RemoteEntities;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BukkitPlugin extends JavaPlugin {
+	//Testing
 	private static BukkitPlugin inst;
 	RemoteEntities reme;
 	@Override
