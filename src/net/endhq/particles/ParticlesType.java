@@ -2,10 +2,7 @@ package net.endhq.particles;
 
 import java.lang.reflect.Field;
 
-import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
-
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public enum ParticlesType {
