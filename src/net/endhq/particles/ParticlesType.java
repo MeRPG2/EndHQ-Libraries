@@ -2,6 +2,8 @@ package net.endhq.particles;
 
 import java.lang.reflect.Field;
 
+import net.endhq.util.nms.Reflection;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -47,29 +49,9 @@ public enum ParticlesType {
 		this.particleName = particleName;
 	}
 	
-	public void sendToPlayer(Player player, Location location, float offsetX, float offsetY, float offsetZ, float speed, int count) throws Exception {
-		Class packetClass=null;
-		for(int v = 1; v<9; v++) {
-			for(int r = 1; r<10; r++) {
-				try {
-					packetClass = Class.forName("net.minecraft.server.v1_"+v+"_R"+r+".PacketPlayOutWorldParticles");
-					break;
-				} catch(Exception ex) {
-					continue;
-				}
-			}
-		}
-		Class playerClass = null;
-		for(int v = 1; v<9; v++) {
-			for(int r = 1; r<10; r++) {
-				try {
-					playerClass = Class.forName("net.minecraft.server.v1_"+v+"_R"+r+".entity.CraftPlayer");
-					break;
-				} catch(Exception ex) {
-					continue;
-				}
-			}
-		}
+	public void sendToPlayer(Player player, Location location, float offsetX, float offsetY, float offsetZ, float speed, int count) throws Exception {//NEW SYSTEM UNTESTED!
+		Class packetClass = Reflection.getNMSClass("net.minecraft.server."+Reflection.revision+".PacketPlayOutWorldParticles");
+		Class playerClass = Reflection.getNMSClass("net.minecraft.server"+Reflection.revision+".entity.CraftPlayer");
 		if(packetClass==null) {
 			throw new ClassNotFoundException("Could not find packet class.");
 		}
@@ -88,7 +70,6 @@ public enum ParticlesType {
 	    ReflectionUtil.setValue(packet, "i", Integer.valueOf(count));
 	    Object cPlayer = playerClass.cast(player);
 	    Field pCon = cPlayer.getClass().getMethod("getHandle", null).invoke(cPlayer, null).getClass().getField("playerConnection");
-	    pCon.get(cPlayer).getClass().getMethod("sendPacket", packet.getClass()).invoke(pCon, packet);//.getHandle().playerConnection.sendPacket(packet);
-	    
+	    pCon.get(cPlayer).getClass().getMethod("sendPacket", packet.getClass()).invoke(pCon, packet);
 	}
 }
