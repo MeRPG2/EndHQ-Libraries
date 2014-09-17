@@ -6,7 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-public enum ParticleEffects {
+public enum ParticlesType {
 	HUGE_EXPLOSION("hugeexplosion"),
 	LARGE_EXPLODE("largeexplode"),
 	FIREWORKS_SPARK("fireworksSpark"),
@@ -44,7 +44,7 @@ public enum ParticleEffects {
 	TILECRACK("tilecrack_");
 	private String particleName;
 	
-	private ParticleEffects(String particleName) {
+	private ParticlesType(String particleName) {
 		this.particleName = particleName;
 	}
 	

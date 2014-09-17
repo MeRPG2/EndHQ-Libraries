@@ -47,27 +47,27 @@ public class ParticlesLibrary {
 		y = v.getX() * sin + v.getY() * cos;
 		return v.setX(x).setY(y);
 	}
-	public static void createGlobalParticleEffect(Location location, ParticleEffects particleType, float speedOfParticles, int howManyParticles) throws Exception {
+	public static void createGlobalParticleEffect(Location location, ParticlesType particleType, float speedOfParticles, int howManyParticles) throws Exception {
 		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 			particleType.sendToPlayer(p, location, 0, 0, 0, speedOfParticles, howManyParticles);
 		}
 	}
 
-	public static void createGlobalParticleEffect(Location location, ParticleEffects particleType, float offsetX, float offsetY, float offsetZ, float speedOfParticles, int howManyParticles) throws Exception {
+	public static void createGlobalParticleEffect(Location location, ParticlesType particleType, float offsetX, float offsetY, float offsetZ, float speedOfParticles, int howManyParticles) throws Exception {
 		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 			particleType.sendToPlayer(p, location, offsetX, offsetY, offsetZ, speedOfParticles, howManyParticles);
 		}
 	}
 
-	public static void showPlayerParticleEffect(Player player, Location location, ParticleEffects particleType, float speedOfParticles, int howManyParticles) throws Exception {
+	public static void showPlayerParticleEffect(Player player, Location location, ParticlesType particleType, float speedOfParticles, int howManyParticles) throws Exception {
 		particleType.sendToPlayer(player, location, 0, 0, 0, speedOfParticles, howManyParticles);
 	}
 
-	public static void showPlayerParticleEffect(Player player, Location location, ParticleEffects particleType, float offsetX, float offsetY, float offsetZ, float speedOfParticles, int howManyParticles) throws Exception {
+	public static void showPlayerParticleEffect(Player player, Location location, ParticlesType particleType, float offsetX, float offsetY, float offsetZ, float speedOfParticles, int howManyParticles) throws Exception {
 		particleType.sendToPlayer(player, location, offsetX, offsetY, offsetZ, speedOfParticles, howManyParticles);
 	}
 	
-	public static void showParticleText(Player player, ParticleEffects particleType, String text) throws Exception {
+	public static void showParticleText(Player player, ParticlesType particleType, String text) throws Exception {
 		Location location = player.getLocation();
 		location = location.add(0D, 2D, 0D);
 		int distance = 3;
@@ -95,7 +95,7 @@ public class ParticlesLibrary {
 		}
 	}
 	
-	public static void createSwirlEffect(Location l, ParticleEffects particleType, int helixes, int circles, int radius) throws Exception {
+	public static void createSwirlEffect(Location l, ParticlesType particleType, int helixes, int circles, int radius) throws Exception {
 		Location location = new Location(Bukkit.getWorld("world"), -430D, 150D, 1505D);
 		int step = 0;
         for (int x = 0; x < circles; x++) {
@@ -131,4 +131,14 @@ public class ParticlesLibrary {
 		g.dispose();
 		return img;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 }
