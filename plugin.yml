@@ -1,0 +1,4 @@
+name: EndHQLibs
+version: 1.0
+main: net.endhq.bukkitplugin.BukkitPlugin
+author: MeRPG

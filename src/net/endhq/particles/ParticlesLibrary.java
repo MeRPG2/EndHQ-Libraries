@@ -95,6 +95,27 @@ public class ParticlesLibrary {
 		}
 	}
 	
+	public static void globalParticleText(Location loc, ParticlesType type, String text) {
+		Location location = loc;
+		Font font = new Font("Tohoma", Font.PLAIN, 12);
+		BufferedImage image = stringToBufferedImage(font, text);
+		int c=0;
+		try {
+			for (int y = 0; y < image.getHeight(); y += 1) {
+				for (int x = 0; x < image.getWidth(); x += 1) {
+					c = image.getRGB(x, y);
+					if (Color.black.getRGB() != c) continue;
+					Vector v = new Vector((float) image.getWidth() / 2 - x, (float) image.getHeight() / 2 - y, 0).multiply((float)1/7);
+					rotateAroundAxisY(v, -location.getYaw() * 3.1415927 / 180);
+					createGlobalParticleEffect(location.add(v), type, 0F, 5);
+					location.subtract(v);
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
 	public static void createSwirlEffect(Location l, ParticlesType particleType, int helixes, int circles, int radius) throws Exception {
 		Location location = new Location(Bukkit.getWorld("world"), -430D, 150D, 1505D);
 		int step = 0;
