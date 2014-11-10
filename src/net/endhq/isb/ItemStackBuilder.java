@@ -78,6 +78,9 @@ public class ItemStackBuilder {
 		stack.setItemMeta(im);
 		return this;
 	}
+	public ItemStack getBukkitStack() {
+		return stack;
+	}
 }
 
 

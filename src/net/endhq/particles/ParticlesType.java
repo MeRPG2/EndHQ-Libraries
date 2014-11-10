@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import net.endhq.util.nms.Reflection;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public enum ParticlesType {
@@ -41,15 +42,28 @@ public enum ParticlesType {
 	HEART("heart"),
 	ANGRY_VILLAGER("angryVillager"),
 	HAPPY_VILLAGER("happerVillager"),
-	ICONCRACK("iconcrack_"),
-	TILECRACK("tilecrack_");
+	ICONCRACK("iconcrack_<id>"),
+	TILECRACK("tilecrack_<id>_<data>");
 	private String particleName;
 	
 	private ParticlesType(String particleName) {
 		this.particleName = particleName;
 	}
 	
+	public ParticlesType setType(Material m) {
+		particleName = particleName.replaceAll("<id>", String.valueOf(m.getId()));
+		return this;
+	}
+	
+	public ParticlesType setData(short data) {
+		particleName = particleName.replaceAll("<data>", String.valueOf(data));
+		return this;
+	}
+	
 	public void sendToPlayer(Player player, Location location, float offsetX, float offsetY, float offsetZ, float speed, int count) throws Exception {//NEW SYSTEM UNTESTED!
+		if(particleName.contains("crack")) {
+			throw new Exception();
+		}
 		Class packetClass = Reflection.getNMSClass("net.minecraft.server."+Reflection.revision+".PacketPlayOutWorldParticles");
 		Class playerClass = Reflection.getNMSClass("net.minecraft.server"+Reflection.revision+".entity.CraftPlayer");
 		if(packetClass==null) {
@@ -59,15 +73,15 @@ public enum ParticlesType {
 			throw new ClassNotFoundException("Could not find player class.");
 		}
 		Object packet = Class.forName("net.minecraft.server").newInstance();
-	    ReflectionUtil.setValue(packet, "a", this.particleName);
-	    ReflectionUtil.setValue(packet, "b", Float.valueOf((float)location.getX()));
-	    ReflectionUtil.setValue(packet, "c", Float.valueOf((float)location.getY()));
-	    ReflectionUtil.setValue(packet, "d", Float.valueOf((float)location.getZ()));
-	    ReflectionUtil.setValue(packet, "e", Float.valueOf(offsetX));
-	    ReflectionUtil.setValue(packet, "f", Float.valueOf(offsetY));
-	    ReflectionUtil.setValue(packet, "g", Float.valueOf(offsetZ));
-	    ReflectionUtil.setValue(packet, "h", Float.valueOf(speed));
-	    ReflectionUtil.setValue(packet, "i", Integer.valueOf(count));
+	    Reflection.setValue(packet, "a", this.particleName);
+	    Reflection.setValue(packet, "b", Float.valueOf((float)location.getX()));
+	    Reflection.setValue(packet, "c", Float.valueOf((float)location.getY()));
+	    Reflection.setValue(packet, "d", Float.valueOf((float)location.getZ()));
+	    Reflection.setValue(packet, "e", Float.valueOf(offsetX));
+	    Reflection.setValue(packet, "f", Float.valueOf(offsetY));
+	    Reflection.setValue(packet, "g", Float.valueOf(offsetZ));
+	    Reflection.setValue(packet, "h", Float.valueOf(speed));
+	    Reflection.setValue(packet, "i", Integer.valueOf(count));
 	    Object cPlayer = playerClass.cast(player);
 	    Field pCon = cPlayer.getClass().getMethod("getHandle", null).invoke(cPlayer, null).getClass().getField("playerConnection");
 	    pCon.get(cPlayer).getClass().getMethod("sendPacket", packet.getClass()).invoke(pCon, packet);

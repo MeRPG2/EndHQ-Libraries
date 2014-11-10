@@ -1,5 +1,7 @@
 package net.endhq.util.nms;
 
+import java.lang.reflect.Field;
+
 import org.bukkit.Bukkit;
 
 public class Reflection {
@@ -20,5 +22,16 @@ public class Reflection {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	public static void setValue(Object instance, String fieldName, Object value) throws Exception {
+		Field field = instance.getClass().getDeclaredField(fieldName);
+		field.setAccessible(true);
+		field.set(instance, value);
+	}
+			  
+	public static Object getValue(Object instance, String fieldName) throws Exception {
+		Field field = instance.getClass().getDeclaredField(fieldName);
+		field.setAccessible(true);
+		return field.get(instance);
 	}
 }
