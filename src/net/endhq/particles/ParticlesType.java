@@ -3,9 +3,11 @@ package net.endhq.particles;
 import java.lang.reflect.Field;
 
 import net.endhq.util.nms.Reflection;
+import net.minecraft.server.v1_7_R4.PacketPlayOutWorldParticles;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public enum ParticlesType {
@@ -60,19 +62,11 @@ public enum ParticlesType {
 		return this;
 	}
 	
-	public void sendToPlayer(Player player, Location location, float offsetX, float offsetY, float offsetZ, float speed, int count) throws Exception {//NEW SYSTEM UNTESTED!
-		if(particleName.contains("crack")) {
-			throw new Exception();
-		}
-		Class packetClass = Reflection.getNMSClass("net.minecraft.server."+Reflection.revision+".PacketPlayOutWorldParticles");
-		Class playerClass = Reflection.getNMSClass("net.minecraft.server"+Reflection.revision+".entity.CraftPlayer");
-		if(packetClass==null) {
-			throw new ClassNotFoundException("Could not find packet class.");
-		}
-		if(playerClass==null) {
-			throw new ClassNotFoundException("Could not find player class.");
-		}
-		Object packet = Class.forName("net.minecraft.server").newInstance();
+
+	
+	
+	public void sendToPlayer(Player player, Location location, float offsetX, float offsetY, float offsetZ, float speed, int count) throws Exception {
+		PacketPlayOutWorldParticles packet = new PacketPlayOutWorldParticles();
 	    Reflection.setValue(packet, "a", this.particleName);
 	    Reflection.setValue(packet, "b", Float.valueOf((float)location.getX()));
 	    Reflection.setValue(packet, "c", Float.valueOf((float)location.getY()));
@@ -82,8 +76,9 @@ public enum ParticlesType {
 	    Reflection.setValue(packet, "g", Float.valueOf(offsetZ));
 	    Reflection.setValue(packet, "h", Float.valueOf(speed));
 	    Reflection.setValue(packet, "i", Integer.valueOf(count));
-	    Object cPlayer = playerClass.cast(player);
-	    Field pCon = cPlayer.getClass().getMethod("getHandle", null).invoke(cPlayer, null).getClass().getField("playerConnection");
-	    pCon.get(cPlayer).getClass().getMethod("sendPacket", packet.getClass()).invoke(pCon, packet);
+	    ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+	    if(particleName.contains("crack")) {
+			throw new Exception();
+		}
 	}
 }
